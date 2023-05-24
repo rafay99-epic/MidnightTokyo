@@ -18,13 +18,12 @@ error="❌"
 browser="🌐"
 icons="🎆"
 files_and_folders="📁"
-install_application="📥"
 reboot="🔁"
 ok="👌"
 
 # Script should be run as a user not as root
 echo "=== ${rocket} Section: Running as a user ==="
-if [ $(id -u) -eq 0 ]; then
+if [ "$(id -u)" -eq 0 ]; then
     echo "${warning} Don't use sudo to run this script. Exiting.."
     exit 1
 else
@@ -33,27 +32,26 @@ fi
 
 echo "=== ${rocket} Section: Fedora System Check ==="
 # Check if Fedora package manager is being used
-if [ -n "$(command -v dnf)" ]; then
-    echo "${done} Fedora detected! Proceed with the rest of the script."
-    # Your additional commands or actions can go here
-else
+if ! command -v dnf &> /dev/null; then
     echo "${error} This script is only for Fedora. Exiting.."
     exit 1
 fi
 
-# Update your System: 
+echo "${done} Fedora detected! Proceeding with the rest of the script."
+
+# Update your System
 echo "=== ${rocket} Section: Updating System ==="
 sudo dnf update -y
 
-
 echo "=== ${rocket} Section: Installing Dependencies ==="
-PKG=(
+# Define the list of packages to install
+PACKAGES=(
     'awesome'
     'dmenu'
     'network-manager-applet'
     'rofi'
     'firefox'
-    'kityy'
+    'kitty'
     'alacritty'
     'lsd'
     'pasystray' 
@@ -77,6 +75,7 @@ PKG=(
     'discord'
     'htop'
     'neofetch'
+    'i3lock'
     'zsh'
     'curl'
     'zip'
@@ -109,48 +108,43 @@ PKG=(
     'xorg-x11-proto-devel'
     'avr-gcc'
 )
-for PKG in "${PKG[@]}"; do
-    echo "=== ${install_application} Installing: ${PKG} ==="
-    sudo dnf install "$PKG" -y
-done
 
-# Fonts:
+# Install packages using a single dnf command
+sudo dnf install -y "${PACKAGES[@]}"
+
+# Fonts
 echo "=== ${rocket} Section: Installing fonts ==="
-sudo dnf install libreoffice-opensymbol-fonts terminus-font google-noto-fonts-common -y
+sudo dnf install -y libreoffice-opensymbol-fonts terminus-font google-noto-fonts-common
 sudo fc-cache -v
 
-# Picom animation:
+# Picom animation
 echo "=== ${motion} Section: Animation ==="
 git clone https://github.com/jonaburg/picom.git
 cd picom
 meson --buildtype=release . build
 ninja -C build
 sudo ninja -C build install
-cd ../
+cd ..
 rm -rf picom
 
-# Brave browser:
+# Brave browser
 echo "=== ${browser} Section: Brave Browser ==="
-sudo dnf install dnf-plugins-core -y
+sudo dnf install -y dnf-plugins-core
 sudo dnf config-manager --add-repo https://brave-browser-rpm-beta.s3.brave.com/brave-browser-beta.repo
 sudo rpm --import https://brave-browser-rpm-beta.s3.brave.com/brave-core-nightly.asc
-sudo dnf install brave-browser-beta
+sudo dnf install -y brave-browser-beta
 
-# Icons Pack: 
+# Icons Pack
 echo "=== ${icons} Section: Icon Pack ==="
 git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
 cd Tela-circle-icon-theme
 chmod +x install.sh
 sudo ./install.sh
-cd ../
+cd ..
 rm -rf Tela-circle-icon-theme
 
 # Copy files to $HOME
 echo "=== ${files_and_folders} Section: Copying files to $HOME ==="
-cp -R .fonts .screenlayout .scripts .themes .zshrc .bashrc "$HOME"
-fc-cache -v
-
-echo "=== ${files_and_folders} Section: Copying files to ${destination} ==="
 # Destination directory
 destination="$HOME/.config"
 
@@ -164,24 +158,23 @@ cp -R -n "$HOME/.config"/* "$destination" >/dev/null 2>&1
 
 # Check if any files/folders were copied
 if [ $? -eq 0 ]; then
-    echo "${done} Files and folders copied to ${destination} successfully."
+    echo "${done} Files and folders copied to $destination successfully."
 else
-    echo "${error} Files and folders copied to ${destination} failed."
+    echo "${error} Files and folders copied to $destination failed."
 fi
 
 echo "=== ${reboot} Section: Reboot System ==="
-
 echo "${reboot} Do you want to reboot your system? (Enter 'yes' or 'no')"
 read -r choice
 
 choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]' | xargs) # Convert to lowercase and remove leading/trailing whitespace
 
 if [[ "$choice" == "yes" || "$choice" == "y" ]]; then
-  echo -e "\n${reboot} Rebooting the system..."
-  sleep 3
-  reboot
+    echo -e "\n${reboot} Rebooting the system..."
+    sleep 3
+    reboot
 elif [[ "$choice" == "no" || "$choice" == "n" ]]; then
-  echo -e "\n${ok} No reboot requested. Exiting..."
+    echo -e "\n${ok} No reboot requested. Exiting..."
 else
-  echo -e "\n${error} Invalid choice. No reboot requested. Exiting..."
+    echo -e "\n${error} Invalid choice. No reboot requested. Exiting..."
 fi
