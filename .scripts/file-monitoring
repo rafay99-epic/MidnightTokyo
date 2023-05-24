@@ -1,0 +1,123 @@
+#!/bin/bash
+echo "
+
+███████╗██╗██╗     ███████╗    ███╗   ███╗ ██████╗ ███╗   ██╗██╗████████╗ ██████╗ ██████╗ ██╗███╗   ██╗ ██████╗ 
+██╔════╝██║██║     ██╔════╝    ████╗ ████║██╔═══██╗████╗  ██║██║╚══██╔══╝██╔═══██╗██╔══██╗██║████╗  ██║██╔════╝ 
+█████╗  ██║██║     █████╗      ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║   ██║   ██║██████╔╝██║██╔██╗ ██║██║  ███╗
+██╔══╝  ██║██║     ██╔══╝      ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║   ██║   ██║██╔══██╗██║██║╚██╗██║██║   ██║
+██║     ██║███████╗███████╗    ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║██║   ██║   ╚██████╔╝██║  ██║██║██║ ╚████║╚██████╔╝
+╚═╝     ╚═╝╚══════╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+                                                                                                                
+Designed: Future Insight
+Author: Abdul Rafay 
+Website: https://futureinsight.blog
+
+Project Information:
+Version: 2.0.2
+Version Release Date: 2022-05-23
+GitHub Repository: https://github.com/rafay99-epic/Scripts
+Version Description: This script will move git repositories, images, and zip files to their respective folders.
+
+"
+
+# Set the destination folder paths
+gitDestination="$HOME/Documents/Testing-Repo"
+imageDestination="$HOME/Pictures/Images"
+zipDestination="$HOME/Documents/unzip"
+
+# Function to move images to the image destination folder
+moveImages() {
+    local folder="$1"
+    local destination="$2"
+
+    # Check if the destination folder exists, if not, create it
+    if [ ! -d "$destination" ]; then
+        mkdir -p "$destination"
+        echo "✅ Created destination folder: $destination"
+    fi
+
+    # Move image files to the destination folder
+    find "$folder" -type f -exec file -N -i -- {} + | awk -F': ' '/^.*image\// {print $1}' | xargs -I {} mv {} "$destination"
+    echo "✅ Moved images from $folder to $destination"
+}
+
+# Function to wait for 3 minutes
+waitTimer() {
+    local minutes=3
+    local seconds=$((minutes * 60))
+
+    echo "⏳ Waiting for 3 minutes..."
+    
+    # Countdown timer for 3 minutes
+    for ((i = seconds; i > 0; i--)); do
+        printf "\r⏳ %02d:%02d remaining" $((i / 60)) $((i % 60))
+        sleep 1
+    done
+
+    echo ""
+}
+
+# Check for images in Downloads folder and move them
+checkAndMoveImages() {
+    local folder="$1"
+
+    # Check if the folder contains any image files
+    if find "$folder" -type f -exec file -N -i -- {} + | grep -qE "image/"; then
+        # Wait for 3 minutes before moving the images
+        waitTimer
+
+        # Move the images to the destination folder
+        moveImages "$folder" "$imageDestination"
+    fi
+}
+
+# Section 1: Checking and Creating the Destination Folder for Git Repositories
+echo "📂 Checking and Creating the Destination Folder for Git Repositories"
+echo "=== Moving Git Repositories ==="
+
+# Check if the destination folder exists for Git repositories, if not, create it
+if [ ! -d "$gitDestination" ]; then
+    mkdir -p "$gitDestination"
+    echo "✅ Created destination folder for Git repositories: $gitDestination"
+fi
+
+# Section 2: Checking and Moving Images
+echo "📸 Checking and Moving Images"
+echo "=== Moving Images ==="
+
+# Wait for 3 minutes and move images from Downloads folder
+waitTimer
+moveImages "$HOME/Downloads" "$imageDestination"
+
+# Section 3: Live Monitoring and Moving of Newly Downloaded Git Repositories, Images, and ZIP files
+echo "🔄 Live Monitoring and Moving of Newly Downloaded Git Repositories, Images, and ZIP Files"
+
+# Start live monitoring of the Downloads folder for new file creations using inotifywait
+inotifywait -m -e create -r --format "%w%f" -q "$HOME/Downloads" |
+while read -r file; do
+    # Check if the newly created file is a Git repository directory
+    if [ -d "$file/.git" ]; then
+        # Wait for 3 minutes before moving the Git repository
+        waitTimer
+
+        # Move the Git repository to the destination folder
+        mv "$file" "$gitDestination"
+        echo "✅ Moved newly cloned Git repository: $file to $gitDestination"
+    else
+        # Check if the newly created file is a ZIP file
+        if [[ "$file" == *.zip ]]; then
+            # Wait for 3 minutes before moving the ZIP file
+            waitTimer
+
+            # Move the ZIP file to the destination folder
+            mv "$file" "$zipDestination"
+            echo "✅ Moved ZIP file: $file to $zipDestination"
+        else
+            # Check if the newly created file is a directory
+            if [ -d "$file" ]; then
+                # Check if the directory contains any images
+                checkAndMoveImages "$file"
+            fi
+        fi
+    fi
+done

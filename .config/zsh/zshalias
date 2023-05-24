@@ -1,0 +1,136 @@
+######################################
+#           ZSh Aliases             #
+######################################
+#-------------------------
+# Terminal and Navigation
+#-------------------------
+alias ls="lsd -ll"
+alias rm="rm -ir"
+alias cp="cp -r"
+alias mv="mv -i"
+
+#--------------------------------
+# System health and Power status
+#--------------------------------
+alias health='sudo auto-cpufreq --live'
+alias h='htop'
+
+#------------------------------
+#System Lock, Reboot, Shutdown
+#------------------------------
+alias reboot='sudo reboot'
+alias shutdown='sudo shutdown now'
+alias lock='swaylock -i $HOME/Pictures/Wallpapers/wallpaper.jpg'
+alias kernel="uname -r"
+
+#----------------
+# Pacman Aliases
+#-----------------
+alias update="paru -Syyu --noconfirm --needed"
+alias pac="sudo pacman -S"
+alias par="paru -S"
+alias remove="sudo pacman -R"
+alias r="sudo pacman -Rns"
+
+#---------------
+#Pacman Cleanup
+#---------------
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
+# This will generate a list of explicitly installed packages
+alias list="sudo pacman -Qqe"
+#This will generate a list of explicitly installed packages without dependencies
+alias listt="sudo pacman -Qqet"
+# list of AUR packages
+alias listaur="sudo pacman -Qqem"
+
+#----------------------------
+# Code Editior & Development 
+#----------------------------
+alias c="code"
+alias lvim="$HOME/.local/bin/lvim"
+alias vim="nvim"
+
+#-----------------
+# Git Aliases
+#-----------------
+alias gs="git status"
+alias g="git"
+alias gc="git clone"
+alias ga="git commit -a"
+alias branch="git branch -r"    
+
+#-----------------
+# System Control
+#-----------------
+alias vol="alsamixer"
+alias net="nmtui"
+alias back="cd ../"
+alias vol_control="pavucontrol"
+
+#-----------------
+# battery Info
+#-----------------
+alias battery="bat /sys/class/power_supply/BAT0/capacity"
+alias battery_check="exec $HOME/.scripts/battery-info.sh"
+
+#--------------------------------------------------------
+# Switch between the Graphic Cards Integerated to Nvidia
+#--------------------------------------------------------
+alias check_graphic="sudo envycontrol -q"
+alias nvidia-graphic='sudo envycontrol -s nvidia'
+alias integrated-graphic='sudo envycontrol -s integrated'
+alias hybird-graphic='sudo envycontrol -s hybird'
+    
+#----------------------------------
+# Redirect to the GitHub Projects
+#----------------------------------
+alias Project="cd $HOME/GitHub-Projects/"
+alias blog='cd $HOME/GitHub-Projects/Future-Insight'
+alias personal='cd $HOME/GitHub-Projects/Personal-Website'
+alias cyber='cd $HOME/GitHub-Projects/Cyber-Attack-Detection'
+alias detct='cd $HOME/GitHub-Projects/Detect-GPT'
+    
+#---------------------
+# Update Fonts Cache
+#---------------------
+alias update-fc='sudo fc-cache -fv'
+    
+#--------------------------
+# Check Firewall Status
+#--------------------------
+alias firewall='sudo ufw status' 
+    
+#---------------------------
+# Fire Wall Rules
+# --------------------------
+# sudo ufw limit 22/tcp
+# sudo ufw allow 80/tcp
+# sudo ufw allow 443/tcp
+# sudo ufw default deny incoming
+# sudo ufw default allow outgoing
+# sudo ufw enable   
+#---------------------------------
+# System Folder
+#---------------------------------
+
+alias downloads= "cd $HOME/Downloads"
+alias picture="cd $HOME/Pictures"
+alias music="cd $HOME/Music"
+alias video="cd $HOME/Videos"
+alias documents="cd $HOME/Documents"
+alias desktop="cd $HOME/Desktop"
+
+#-------------------------
+# Widnow Manager Blinking
+#-------------------------
+alias clock="peaclock"
+alias visual="cava"
+
+#----------------------
+# Hugo Server
+#-----------------------
+alias hu-server="hugo server --disableFastRender"
+alias hu-build="hugo"
+alias hu-new="hugo new"
+
+
