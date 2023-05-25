@@ -176,6 +176,8 @@ cp -R -n .config/* "$destination" >/dev/null 2>&1
 # Copying  Pictures to $HOME/Pictures
 cp -R -n Toky-Wallpapers  "$pictures" >/dev/null 2>&1
 
+cp -R -n .bashrc .zshrc .themes .scripts .fonts .screenlayout  "$HOME" >/dev/null 2>&1
+
 # Check if any files/folders were copied
 if [ $? -eq 0 ]; then
     echo "${done} Files and folders copied to $destination successfully."
