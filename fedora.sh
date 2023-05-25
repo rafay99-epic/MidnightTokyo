@@ -62,14 +62,9 @@ echo "=== ${rocket} Section: Installing Dependencies ==="
 PACKAGES=(
     'awesome'
     'dmenu'
-    'fish'
-    'zsh'
     'network-manager-applet'
     'rofi'
-    'firefox'
     'kitty'
-    'alacritty'
-    'lsd'
     'pasystray' 
     'volumeicon'
     'redshift'
@@ -79,26 +74,13 @@ PACKAGES=(
     'lxappearance' 
     'nitrogen'
     'variety'
-    'neovim'
     'vim'
     'bat'
-    'obs-studio'
-    'nitrogen'
     'lxappearance'
     'make'
     'cmake'
     'rust'
-    'discord'
-    'htop'
-    'neofetch'
     'i3lock'
-    'zsh'
-    'curl'
-    'zip'
-    'unzip'
-    'unrar'
-    'gnome-characters'
-    'git'
     'ninja-build'
     'gcc'
     'gcc-c++'
@@ -143,13 +125,6 @@ sudo ninja -C build install
 cd ..
 rm -rf picom
 
-# Brave browser
-echo "=== ${browser} Section: Brave Browser ==="
-sudo dnf install -y dnf-plugins-core
-sudo dnf config-manager --add-repo https://brave-browser-rpm-beta.s3.brave.com/brave-browser-beta.repo
-sudo rpm --import https://brave-browser-rpm-beta.s3.brave.com/brave-core-nightly.asc
-sudo dnf install -y brave-browser-beta
-
 # Icons Pack
 echo "=== ${icons} Section: Icon Pack ==="
 git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
@@ -171,18 +146,46 @@ if [ ! -d "$destination" ]; then
 fi
 
 # Copy all folders and files from .config to $HOME/.config
-cp -R -n .config/* "$destination" >/dev/null 2>&1
+cd .config/
+cp -R -n awesome goa-1.0 gtk-2.0 gtk-3.0 gtk-4.0 rofi picom "$destination" >/dev/null 2>&1
 
 # Copying  Pictures to $HOME/Pictures
 cp -R -n Toky-Wallpapers  "$pictures" >/dev/null 2>&1
 
-cp -R -n .bashrc .zshrc .themes .scripts .fonts .screenlayout  "$HOME" >/dev/null 2>&1
+cp -R -n .themes  .fonts  "$HOME" >/dev/null 2>&1
 
 # Check if any files/folders were copied
 if [ $? -eq 0 ]; then
     echo "${done} Files and folders copied to $destination successfully."
 else
     echo "${error} Files and folders copied to $destination failed."
+fi
+
+# Function to display a success message with emoji
+print_success() {
+    echo "✅ $1"
+}
+
+# Function to display a warning message with emoji
+print_warning() {
+    echo "⚠️ $1"
+}
+
+# Function to display an error message with emoji
+print_error() {
+    echo "❌ $1"
+    exit 1
+}
+
+# Prompt user for installation
+read -rp "Do you want to install and configure the author's files? (y/n): " choice
+if [[ $choice =~ ^[Yy]$ ]]; then
+    # Installation steps go here
+    print_success "Starting installation..."
+    ./author-setup.sh
+    print_success "Installation and configuration complete!"
+else
+    print_warning "Installation cancelled by user."
 fi
 
 echo "=== ${reboot} Section: Reboot System ==="
