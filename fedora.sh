@@ -148,7 +148,7 @@ fi
 # Copy all folders and files from .config to $HOME/.config
 cd .config/
 cp -R -n awesome goa-1.0 gtk-2.0 gtk-3.0 gtk-4.0 rofi picom "$destination" >/dev/null 2>&1
-
+cd ..
 # Copying  Pictures to $HOME/Pictures
 cp -R -n Toky-Wallpapers  "$pictures" >/dev/null 2>&1
 
