@@ -43,4 +43,31 @@ The script performs the following actions:
 
 8. Prompts the user to reboot the system to apply the changes. The user can choose to reboot or not.
 
+# Look & Feel
+## Desktop
+![desktop](/images/Rafay-Desktop-first-Image.png)
+## Multiple Terminals
+![multiple-terminal](/images/terminal-Shot.png)
+## Single Terminal
+![single-terminal](/images/termina-single-shot.png)
+<!-- ## Rofi
+![rofi](/images/rofi-shot.png) -->
 
+# Credits
+- [Awesome Window Manager](https://awesomewm.org/)
+- [Fedora](https://getfedora.org/)
+- [Tela-circle Icon Pack](https://github.com/vinceliuice/Tela-circle-icon-theme)
+- [Picom](https://github.com/jonaburg/picom)
+- [Orginal-Config](https://github.com/micro-hawk/awesomight)
+
+# Contributions
+Thank you so much to taking interset into this Project checkout the [Contributing.md](/Contributing.md) for more information.
+
+# License
+This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
+
+# Author
+
+My name is [Abdul Rafay](https://future-insight.blog/author), and I am the maintainer of the MidnightTokyo project. If you have any questions, issues, or suggestions, feel free to reach out to me. You can use the discussion tab in the project repository or contact me directly through my [website](https://future-insight.blog/contact).
+
+I am excited to collaborate with contributors and appreciate your interest in improving MidnightTokyo. Your contributions and feedback are valuable in shaping the future of this project. Let's work together to make MidnightTokyo an amazing desktop environment!
