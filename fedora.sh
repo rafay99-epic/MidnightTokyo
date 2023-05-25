@@ -52,11 +52,18 @@ sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfre
 # Enabling AppStream
 sudo dnf group update core -y
 
+# Update your System
+echo "=== ${rocket} Section: Updating System ==="
+sudo dnf update -y
+
+
 echo "=== ${rocket} Section: Installing Dependencies ==="
 # Define the list of packages to install
 PACKAGES=(
     'awesome'
     'dmenu'
+    'fish'
+    'zsh'
     'network-manager-applet'
     'rofi'
     'firefox'
@@ -89,7 +96,6 @@ PACKAGES=(
     'curl'
     'zip'
     'unzip'
-    'rar'
     'unrar'
     'gnome-characters'
     'git'
@@ -116,6 +122,7 @@ PACKAGES=(
     'xcb-util-renderutil-devel' 
     'xorg-x11-proto-devel'
     'avr-gcc'
+    'pcre-devel'
 )
 
 # Install packages using a single dnf command
@@ -123,7 +130,7 @@ sudo dnf install -y "${PACKAGES[@]}"
 
 # Fonts
 echo "=== ${rocket} Section: Installing fonts ==="
-sudo dnf install -y libreoffice-opensymbol-fonts terminus-font google-noto-fonts-common
+sudo dnf install -y libreoffice-opensymbol-fonts terminus-fonts google-noto-fonts-common
 sudo fc-cache -v
 
 # Picom animation
