@@ -19,6 +19,7 @@ warning="⚠️"
 error="❌"
 browser="🌐"
 files_and_folders="📁"
+prompte="🔥"
 
 
 # Script should be run as a user not as root
@@ -47,7 +48,7 @@ echo "=== ${rocket} Section: Updating System ==="
 sudo dnf update -y
 
 
-echo "=== ${rocket} Section: Installing Dependencies ==="
+echo "=== ${rocket} Section: Installing Applications ==="
 # Define the list of packages to install
 PACKAGES=(
     'fish'
@@ -76,6 +77,9 @@ PACKAGES=(
     'flatpak'
     'arandr'
     'xrandr'
+    'tldr'
+    'hugo'
+    'trash-cli'
 )
 
 # Install packages using a single dnf command
@@ -102,6 +106,9 @@ sudo dnf install -y dnf-plugins-core
 sudo dnf config-manager --add-repo https://brave-browser-rpm-beta.s3.brave.com/brave-browser-beta.repo
 sudo rpm --import https://brave-browser-rpm-beta.s3.brave.com/brave-core-nightly.asc
 sudo dnf install -y brave-browser-beta
+
+echo "=== ${prompte} Section: Starship Promote ==="
+curl -sS https://starship.rs/install.sh | sh
 
 
 echo "=== ${files_and_folders} Section: Moving Files to $HOME/.config ==="
