@@ -156,6 +156,7 @@ rm -rf Tela-circle-icon-theme
 echo "=== ${files_and_folders} Section: Copying files to $HOME ==="
 # Destination directory
 destination="$HOME/.config"
+pictures="$HOME/Pictures"
 
 # Check if the destination directory exists, create it if not
 if [ ! -d "$destination" ]; then
@@ -163,7 +164,10 @@ if [ ! -d "$destination" ]; then
 fi
 
 # Copy all folders and files from .config to $HOME/.config
-cp -R -n "$HOME/.config"/* "$destination" >/dev/null 2>&1
+cp -R -n .config/* "$destination" >/dev/null 2>&1
+
+# Copying  Pictures to $HOME/Pictures
+cp -R -n Toky-Wallpapers  "$pictures" >/dev/null 2>&1
 
 # Check if any files/folders were copied
 if [ $? -eq 0 ]; then
