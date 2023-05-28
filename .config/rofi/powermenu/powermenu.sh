@@ -15,15 +15,16 @@
 # full_circle     full_square     full_rounded     full_alt
 # row_circle      row_square      row_rounded      row_alt
 
-theme="full_circle"
+# theme="full_circle"
+theme="card_rounded"
 dir="$HOME/.config/rofi/powermenu"
 
 # random colors
 styles=($(ls -p --hide="colors.rasi" $dir/styles))
-color="${styles[$(( $RANDOM % 8 ))]}"
+# color="${styles[$(( $RANDOM % 8 ))]}"
 
 # comment this line to disable random colors
-sed -i -e "s/@import .*/@import \"$color\"/g" $dir/styles/colors.rasi
+# sed -i -e "s/@import .*/@import \"$color\"/g" $dir/styles/colors.rasi
 
 # comment these lines to disable random style
 # themes=($(ls -p --hide="powermenu.sh" --hide="styles" --hide="confirm.rasi" --hide="message.rasi" $dir))

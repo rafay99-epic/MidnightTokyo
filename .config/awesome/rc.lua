@@ -120,12 +120,12 @@ awful.util.tagnames = {"🅱🆁🅰🆅🅴 ", "🆃🅴🆁🅼🅸🅽🅰�
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    -- awful.layout.suit.floating,
-    -- awful.layout.suit.tile.left,
-    -- awful.layout.suit.tile.right,
-    --awful.layout.suit.tile.bottom,
-    --awful.layout.suit.tile.top,
-    --awful.layout.suit.fair,
+    -- awful.layout.suit.floating, 
+    awful.layout.suit.tile.left, 
+    awful.layout.suit.tile.right,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.top,
+    -- awful.layout.suit.fair,
     --awful.layout.suit.fair.horizontal,
     --awful.layout.suit.spiral,
     --awful.layout.suit.spiral.dwindle,
@@ -287,14 +287,14 @@ globalkeys = my_table.join(
         end,
         {description = "show dmenu", group = "hotkeys"}),
 
-        awful.key(
-            {modkey, "Shift"},
-                's',
-            function()
-                os.execute("sh ~/.config/rofi/launchers/slate/launcher.sh")
-            end,
-                    {description = 'Lock the screen', group = 'awesome'}
-                ),
+        -- awful.key(
+        --     {modkey, "Shift"},
+        --         's',
+        --     function()
+        --         os.execute("sh ~/.config/rofi/launchers/slate/launcher.sh")
+        --     end,
+        --             {description = 'Lock the screen', group = 'awesome'}
+        --         ),
     
     
     
@@ -322,24 +322,28 @@ globalkeys = my_table.join(
     -- awful.key({modkey, }, "n", function() awful.util.spawn("nmtui") end,
     --     {description="terminal app", group="gui apps"}),
 
-    awful.key({ modkey,  }, "e", function () awful.util.spawn( "nautilus" ) end,
+    awful.key({ modkey,  }, "e", function () awful.util.spawn( "thunar" ) end,
         {description = "Default File Manager" , group = "gui apps" }),
     
     awful.key({ modkey, "Shift" }, "b", function () awful.util.spawn( "brave-browser" ) end,
         {description = "surf web browser" , group = "gui apps" }),
 
     -- screenshots
-    awful.key({ }, "Print", function () awful.util.spawn("gnome-screenshot") end,
-        {description = "Gnome Screenshot", group = "screenshots"}),
+    awful.key({ }, "Print", function () awful.util.spawn("flameshort") end,
+        {description = "Flameshort Screenshot", group = "screenshots"}),
     awful.key({ modkey           }, "Print", function () awful.util.spawn( "gnome-screenshot" ) end,
         {description = "Gnome Screenshot", group = "screenshots"}),
     awful.key({ modkey, "Shift"  }, "Print", function() awful.util.spawn("gnome-screenshot") end,
         {description = "Gnome Screenshot", group = "screenshots"}),
 
     -- Personal keybindings}}}
-    awful.key({modkey, }, "l", function () awful.util.spawn("i3lock --image /home/prometheus/Pictures/Toky-Wallpapers/tokyo-night04.png") end,
-      { description = "Lock Scrren", group = "System"}),
-      
+    -- awful.key({modkey, "Shift"}, "l", function () awful.util.spawn("i3lock --image /home/prometheus/Pictures/Toky-Wallpapers/tokyo-night04.png") end,
+    --   { description = "Lock Screen", group = "System"}),
+    
+      awful.key({modkey, "Shift"}, "l", function () 
+        os.execute("sh ~/.scripts/lock.sh")
+        end,
+      { description = "Lock Screen", group = "System"}),
 
     -- Hotkeys Awesome
 
@@ -524,7 +528,8 @@ globalkeys = my_table.join(
             'y',
         function()
             -- awful.spawn(scrlocker)
-            awful.spawn(scrlocker)
+            -- awful.spawn(scrlocker)
+            os.execute("sh ~/.scripts/lock.sh")
         end,
                 {description = 'Lock the screen', group = 'awesome'}
             ),
@@ -588,7 +593,7 @@ globalkeys = my_table.join(
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
               {description = "-10%", group = "hotkeys"}),
               -- ALSA volume control
-    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -D pulse sset Master 2%+", false) end),
+    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("m -D pulse sset Master 2%+", false) end),
     awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 2%-", false) end),
     awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle", false) end),
     awful.key({ modkey1, "Shift" }, "m",
@@ -943,9 +948,9 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- Autostart applications
---os.execute("sh ~/.screenlayout/rightAcerMonitor.sh")
--- awful.spawn.with_shell("picom --experimental-backends")
-awful.spawn.with_shell("picom")
+os.execute("sh ~/.screenlayout/vertical-layout.sh")
+awful.spawn.with_shell("picom --experimental-backends")
+-- awful.spawn.with_shell("picom")
 awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("pa-applet")
 -- awful.spawn.with_shell("redshift -l 21.9974:79.0011 -O 4900")
@@ -960,5 +965,5 @@ awful.spawn.with_shell("flameshot")
 -- FOR EXTERNAL SAMSUNG MONITOR
 -- os.execute("sh ~/.screenlayout/samsungMonitor.sh")
 awful.spawn.with_shell("libinput-gestures-setup start")
-awful.spawn.with_shell("sleep 1s && xss-lock i3lock ")
+awful.spawn.with_shell("sleep 10s && xss-lock -- i3lock -i ~/Pictures/Toky-Wallpapers/cyberpunk2.jpg")
 --

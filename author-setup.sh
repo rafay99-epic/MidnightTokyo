@@ -32,7 +32,6 @@ else
 fi
 
 
-
 echo "=== ${rocket} Section: Fedora System Check ==="
 # Check if Fedora package manager is being used
 if ! command -v dnf &> /dev/null; then
@@ -41,7 +40,6 @@ if ! command -v dnf &> /dev/null; then
 fi
 
 echo "${done} Fedora detected! Proceeding with the rest of the script."
-
 
 # Update your System
 echo "=== ${rocket} Section: Updating System ==="
@@ -80,6 +78,7 @@ PACKAGES=(
     'tldr'
     'hugo'
     'trash-cli'
+    'cmatrix'
 )
 
 # Install packages using a single dnf command
@@ -109,6 +108,14 @@ sudo dnf install -y brave-browser-beta
 
 echo "=== ${prompte} Section: Starship Promote ==="
 curl -sS https://starship.rs/install.sh | sh
+
+echo "=== ${rocket} Section: Anaconda Install ==="
+wget  https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh
+chmod +x Anaconda3-2023.03-1-Linux-x86_64.sh
+./Anaconda3-2023.03-1-Linux-x86_64.sh
+
+echo "=== ${prompte} Section: Fm6000 ==="
+sh -c "$(curl https://codeberg.org/anhsirk0/fetch-master-6000/raw/branch/main/install.sh)"
 
 
 echo "=== ${files_and_folders} Section: Moving Files to $HOME/.config ==="
