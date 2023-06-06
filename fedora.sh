@@ -15,7 +15,6 @@ motion="🏃"
 done="✅"
 warning="⚠️"
 error="❌"
-browser="🌐"
 icons="🎆"
 files_and_folders="📁"
 reboot="🔁"
@@ -67,7 +66,6 @@ PACKAGES=(
     'kitty'
     'pasystray' 
     'volumeicon'
-    'redshift'
     'i3lock'
     'thunar'
     'flameshot'
@@ -105,6 +103,9 @@ PACKAGES=(
     'xorg-x11-proto-devel'
     'avr-gcc'
     'pcre-devel'
+    'xss-lock'
+    'blueman'
+    'alsa-tools'
 )
 
 # Install packages using a single dnf command
@@ -124,6 +125,15 @@ ninja -C build
 sudo ninja -C build install
 cd ..
 rm -rf picom
+
+echo "=== ${rocket} Section: Installing i3lock-color ==="
+sudo dnf install -y autoconf automake cairo-devel fontconfig gcc libev-devel libjpeg-turbo-devel libXinerama libxkbcommon-devel libxkbcommon-x11-devel libXrandr pam-devel pkgconf xcb-util-image-devel xcb-util-xrm-devel
+git clone https://github.com/Raymo111/i3lock-color.git
+cd i3lock-color
+./build.sh
+./install-i3lock-color.sh
+cd ..
+rm -rf i3lock-color
 
 # Icons Pack
 echo "=== ${icons} Section: Icon Pack ==="

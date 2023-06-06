@@ -90,9 +90,10 @@ __conda_setup="$('/home/prometheus/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/prometheus/anaconda3/etc/profile.d/conda.sh" ]; then
-# . "/home/prometheus/anaconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
+    if [[ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]]; 
+    then
+        . "$HOME/anaconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
     else
-# export PATH="/home/prometheus/anaconda3/bin:$PATH"  # commented out by conda initialize
+        export PATH="$HOME/anaconda3/bin:$PATH"  # commented out by conda initialize
     fi
 fi
