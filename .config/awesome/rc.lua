@@ -120,15 +120,15 @@ awful.util.tagnames = {"🅱🆁🅰🆅🅴 ", "🆃🅴🆁🅼🅸🅽🅰�
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    -- awful.layout.suit.floating, 
+    awful.layout.suit.floating, 
     awful.layout.suit.tile.left, 
     awful.layout.suit.tile.right,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
-    -- awful.layout.suit.fair,
-    --awful.layout.suit.fair.horizontal,
-    --awful.layout.suit.spiral,
-    --awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
     -- awful.layout.suit.max,
     --awful.layout.suit.max.fullscreen,
     -- awful.layout.suit.magnifier,
@@ -136,7 +136,7 @@ awful.layout.layouts = {
     --awful.layout.suit.corner.ne,
     --awful.layout.suit.corner.sw,
     --awful.layout.suit.corner.se,
-    -- lain.layout.cascade,
+    lain.layout.cascade,
     -- lain.layout.cascade.tile,
     --lain.layout.centerwork,
     --lain.layout.centerwork.horizontal,
@@ -327,6 +327,12 @@ globalkeys = my_table.join(
     
     awful.key({ modkey, "Shift" }, "b", function () awful.util.spawn( "brave-browser" ) end,
         {description = "surf web browser" , group = "gui apps" }),
+
+    awful.key({ modkey, "Shift" }, "c", function () awful.util.spawn( "code" ) end,
+        {description = "Code Editior Visual Studio Code" , group = "gui apps" }),
+
+    awful.key({ modkey, "Shift" }, "s", function () awful.util.spawn( "flatpak run com.spotify.Client" ) end,
+        {description = "Music Spotify" , group = "gui apps" }),
 
     -- screenshots
     awful.key({ }, "Print", function () awful.util.spawn("flameshort") end,
@@ -965,5 +971,5 @@ awful.spawn.with_shell("flameshot")
 -- FOR EXTERNAL SAMSUNG MONITOR
 -- os.execute("sh ~/.screenlayout/samsungMonitor.sh")
 awful.spawn.with_shell("libinput-gestures-setup start")
-awful.spawn.with_shell("sleep 10s && xss-lock -- i3lock -i ~/Pictures/Toky-Wallpapers/cyberpunk2.jpg")
+awful.spawn.with_shell("sleep 10s && xss-lock  sh $HOME/.scripts/lock.sh")
 --

@@ -109,11 +109,6 @@ sudo dnf install -y brave-browser-beta
 echo "=== ${prompte} Section: Starship Promote ==="
 curl -sS https://starship.rs/install.sh | sh
 
-echo "=== ${rocket} Section: Anaconda Install ==="
-wget  https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh
-chmod +x Anaconda3-2023.03-1-Linux-x86_64.sh
-./Anaconda3-2023.03-1-Linux-x86_64.sh
-
 echo "=== ${prompte} Section: Fm6000 ==="
 sh -c "$(curl https://codeberg.org/anhsirk0/fetch-master-6000/raw/branch/main/install.sh)"
 
@@ -126,3 +121,8 @@ cp -R -n .bashrc .zshrc .scripts .screenlayout  "$HOME" >/dev/null 2>&1
 cd .config/
 cp -R -n alacritty fish kitty neofetch nvim bash htop ranger zsh starship.toml "$HOME"/.config/ >/dev/null 2>&1
 cd ..
+
+echo "=== ${rocket} Section: Anaconda Install ==="
+wget  https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh
+chmod +x Anaconda3-2023.03-1-Linux-x86_64.sh
+./Anaconda3-2023.03-1-Linux-x86_64.sh
