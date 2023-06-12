@@ -7,8 +7,8 @@
 #------------
 # EXPORT 
 #------------
-export EDITOR='nano'
-export VISUAL='nano'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export HISTCONTROL=ignoreboth:erasedups
 export PAGER='most'
 bind "set completion-ignore-case on"
@@ -73,27 +73,14 @@ eval "$(starship init bash)"
 #--------------------------
 # >>> conda initialize >>>
 #--------------------------
-# __conda_setup="$('/home/prometheus/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/home/prometheus/anaconda3/etc/profile.d/conda.sh" ]; then
-#     . "/home/prometheus/anaconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
-#     else
-#        export PATH="/home/prometheus/anaconda3/bin:$PATH"  # commented out by conda initialize
-#     fi
-# fi
-# unset __conda_setup
-
-
+# !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/prometheus/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [[ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]]; 
-    then
-        . "$HOME/anaconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
+    if [ -f "/home/$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+. "/home/$HOME/anaconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
     else
-        export PATH="$HOME/anaconda3/bin:$PATH"  # commented out by conda initialize
+      export PATH="/home/$HOME/anaconda3/bin:$PATH"  # commented out by conda initialize
     fi
 fi
