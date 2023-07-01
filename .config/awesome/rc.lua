@@ -112,9 +112,8 @@ local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
--- https://fsymbols.com/generators/blocky/
 -- awful.util.tagnames = {"🆆🆆🆆 ", "🅳🅴🆅 ", "🆃🅴🆁🅼 ", "🅵🅸🅻🅴 ", "🆂🅷🅸🆃 " }
-awful.util.tagnames = {"🅱🆁🅰🆅🅴 ", "🆃🅴🆁🅼🅸🅽🅰🅻 ", "🅲🅾🅳🅴 ", "🆂🅿🅾🆃🅸🅵🆈 ", "🅵🅸🅻🅴 ", "🆅🅼 ", "🅳🅸🆂🅲🅾🆁🅳 "}
+awful.util.tagnames = {"🅱🆁🅰🆅🅴 ", "🆃🅴🆁🅼🅸🅽🅰🅻 ", "🅲🅾🅳🅴 ", "🆂🅿🅾🆃🅸🅵🆈 ", "🅵🅸🅻🅴 ", "🆅🅼 ", "🅳🅸🆂🅲🅾🆁🅳 ", "🆆🅷🅰🆃🆂🅰🅿🅿 "}
 -- awful.util.tagnames = {" α  👻", " β  💀", " γ  🧠", " δ  👾", " ζ  🙀" }
 -- awful.util.tagnames = { "👨‍💻 1", "🌐 2", "🤖 3", "🎧4"}
 awful.layout.suit.tile.left.mirror = true
@@ -322,11 +321,11 @@ globalkeys = my_table.join(
     -- awful.key({modkey, }, "n", function() awful.util.spawn("nmtui") end,
     --     {description="terminal app", group="gui apps"}),
 
-    awful.key({ modkey,  }, "e", function () awful.util.spawn( "thunar" ) end,
+    awful.key({ modkey, "Shift" }, "e", function () awful.util.spawn( filemanager ) end,
         {description = "Default File Manager" , group = "gui apps" }),
     
-    awful.key({ modkey, "Shift" }, "b", function () awful.util.spawn( "brave-browser" ) end,
-        {description = "surf web browser" , group = "gui apps" }),
+    awful.key({ modkey, "Shift" }, "b", function () awful.util.spawn( browser ) end,
+        {description = "Brave web browser" , group = "gui apps" }),
 
     awful.key({ modkey, "Shift" }, "c", function () awful.util.spawn( "code" ) end,
         {description = "Code Editior Visual Studio Code" , group = "gui apps" }),
@@ -585,20 +584,13 @@ globalkeys = my_table.join(
     awful.key({ modkey, }, "z", function () awful.screen.focused().quake:toggle() end,
               {description = "dropdown application", group = "super"}),
 
-    -- Widgets popups
-    -- awful.key({ altkey, }, "c", function () lain.widget.calendar.show(7) end,
-    --           {description = "show calendar", group = "widgets"}),
-    -- awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
-    --           {description = "show filesystem", group = "widgets"}),
-    --awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
-              --{description = "show weather", group = "widgets"}),
-
     -- Brightness
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
               {description = "+10%", group = "hotkeys"}),
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
               {description = "-10%", group = "hotkeys"}),
-              -- ALSA volume control
+    
+    -- ALSA volume control
     awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("m -D pulse sset Master 2%+", false) end),
     awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 2%-", false) end),
     awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle", false) end),
@@ -620,14 +612,7 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "v", function () awful.spawn.with_shell("xsel -b | xsel") end,
               {description = "copy gtk to terminal", group = "hotkeys"}),
 
-
-    -- Default
-    --[[ Menubar
-
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "super"})
-    --]]
-
+    -- Run Lua Code
     awful.key({ altkey, "Shift" }, "x",
               function ()
                   awful.prompt.run {
@@ -638,7 +623,7 @@ globalkeys = my_table.join(
                   }
               end,
               {description = "lua execute prompt", group = "awesome"})
-    --]]
+    
 )
 
 clientkeys = my_table.join(
@@ -800,10 +785,10 @@ awful.rules.rules = {
     --       properties = { maximized = true } },
 
     { rule = { class = "Gimp*", role = "gimp-image-window" },
-          properties = { maximized = true } },
+          properties = { maximized = false } },
 
     { rule = { class = "inkscape" },
-          properties = { maximized = true } },
+          properties = { maximized = false } },
 
     -- { rule = { class = mediaplayer },
     --       properties = { maximized = true } },
@@ -814,10 +799,10 @@ awful.rules.rules = {
 
 
     { rule = { class = "VirtualBox Manager" },
-          properties = { maximized = true } },
+          properties = { maximized =  false } },
 
     { rule = { class = "VirtualBox Machine" },
-          properties = { maximized = true } },
+          properties = { maximized = false } },
 
     { rule = { class = "Xfce4-settings-manager" },
           properties = { floating = false } },
@@ -954,22 +939,26 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- Autostart applications
+
+-- Exectuting The Vertical Layout Screen(External-Layout)
 os.execute("sh ~/.screenlayout/vertical-layout.sh")
+-- Enable & Start Picom
 awful.spawn.with_shell("picom --experimental-backends")
--- awful.spawn.with_shell("picom")
+
+-- Enabling Wifi & Network Manager Widget
 awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("pa-applet")
--- awful.spawn.with_shell("redshift -l 21.9974:79.0011 -O 4900")
+
+-- Wallpaper Chage Widget
 awful.spawn.with_shell("pasystray")
 awful.spawn.with_shell("variety")
--- awful.spawn.with_shell("nitrogen --restore")
+-- Bluetooth Widget
 awful.spawn.with_shell("blueman-tray")
+-- Volume Widget 
 awful.spawn.with_shell("volumeicon")
---  awful.spawn.with_shell("redshift")
+-- Enabling Flameshort
 awful.spawn.with_shell("flameshot")
--- awful.spawn.with_shell("xset r rate 400 60")
--- FOR EXTERNAL SAMSUNG MONITOR
--- os.execute("sh ~/.screenlayout/samsungMonitor.sh")
+-- Enabling the track pad guestures
 awful.spawn.with_shell("libinput-gestures-setup start")
+-- Sleep Laptop after 10 sec
 awful.spawn.with_shell("sleep 10s && xss-lock  sh $HOME/.scripts/lock.sh")
---
