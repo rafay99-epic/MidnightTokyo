@@ -74,7 +74,6 @@ PACKAGES=(
     'variety'
     'vim'
     'bat'
-    'lxappearance'
     'make'
     'cmake'
     'rust'
