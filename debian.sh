@@ -193,4 +193,26 @@ sudo ninja -C build install
 cd ..
 rm -rf picom
 
+# Placing Files
+cd .config/
+cp -R -n awesome gtk-1.0 gtk-2.0 gtk-3.0 gtk-4.0 rofi picom "$destination" >/dev/null 2>&1
+cd ..
+# Copying  Pictures to $HOME/Pictures
+cp -R -n Toky-Wallpapers  "$pictures" >/dev/null 2>&1
+
+cp -R -n .themes  .fonts  "$HOME" >/dev/null 2>&1
+
+cp -R -n .bashrc .zshrc .scripts .screenlayout  "$HOME" >/dev/null 2>&1
+
+cd .config/
+cp -R -n alacritty fish kitty neofetch nvim bash htop ranger zsh starship.toml "$HOME"/.config/ >/dev/null 2>&1
+cd ..
+
+# Check if any files/folders were copied
+if [ $? -eq 0 ]; then
+    echo "${done} Files and folders copied to $destination successfully."
+else
+    echo "${error} Files and folders copied to $destination failed."
+fi
+
 
