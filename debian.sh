@@ -183,7 +183,7 @@ for PKG in "${PKGS[@]}"; do
     sudo nala install "$PKG" -y
 done
 
-
+echo "✨ All applications installed successfully! ✨"
 
 # Picom animation
 echo "=== ${motion} Section: Animation ==="
@@ -235,11 +235,11 @@ cd parts
 ./other-apps.sh
 cd ..
 
-
-echo "
-✨ All applications installed successfully! ✨"
-
-echo -e "🚀 Installation and setup completed successfully!\n"
+echo "=== ${rocket} Section: Installing Display Manager ==="
+cd parts
+chmod +x debian-display-manager.sh
+./debian-display-manager.sh
+cd ..
 
 
 echo "=== ${rocket} Section: Reboot System ==="

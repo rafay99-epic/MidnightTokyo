@@ -25,6 +25,12 @@ if [ "$EUID" -eq 0 ]; then
     show_error "Please do not run this script with sudo."
 fi
 
+# Check for application
+cd parts
+chmod +x check-xorg.sh
+./check-xorg.sh
+cd ..
+
 # Check if Debian package manager is installed
 if command -v apt-get &> /dev/null; then
     echo "✅ Debian package manager (apt-get) is installed."

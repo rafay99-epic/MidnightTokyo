@@ -216,6 +216,13 @@ else
     echo "⚠️ Installation cancelled by user."
 fi
 
+echo "=== ${rocket} Section: Installing Display Manager ==="
+cd parts
+chmod +x fedora-display-manager.sh
+./fedora-display-manager.sh
+cd ..
+
+
 echo "=== ${rocket} Section: Reboot System ==="
 cd parts
 chmod +x reboot.sh
