@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 echo "
 
         ███╗   ███╗██╗██████╗ ███╗   ██╗██╗ ██████╗ ██╗  ██╗████████╗  ████████╗ ██████╗ ██╗  ██╗██╗   ██╗ ██████╗ 
@@ -12,207 +14,238 @@ echo "
                                             Debain Setup Script
 "
 
-
-# Updating System 
+# 🔄 Updating system
+echo "🔁 Updating system..."
 sudo apt-get update -y
 
-# installing dependiences
-echo -ne "
--------------------------------------------------------------------------
-                --- Dependicies Applications---
-    
-    Applications:
-    1.  git
-    2.  curl
-    3.  wget
-    4.  vim
-    5.  nano
-    6.  python3
-    7.  python3-pip
-    8.  python3-venv
-    9.  build-essential
-    10. libreadline-gplv2-dev 
-    11. libncursesw5-dev
-    12. cmake
-    13. apt-transport-https
-    14. libvirt-clients
-    15. libvirt-daemon-system
-    16. pkg-config 
-    17. libfreetype6-dev
-    18. libfontconfig1-dev 
-    19. libxcb-xfixes0-dev 
-    20. libxkbcommon-dev 
-    21. zlib1g-dev
-    22. libncurses5-dev 
-    23. libgdbm-dev 
-    24. libnss3-dev 
-    25. libssl-dev 
-    26. libreadline-dev
-    27. libffi-dev
-    28. libsqlite3-dev 
-    29. libbz2-dev
-    30. Flatpak
-    31. Pascall
-    32. nala
-
--------------------------------------------------------------------------
-"
-sudo apt-get install git wget curl vim nano neovim -y
-sudo apt-get install python3 -y 
-sudo apt-get install python3-pip -y
-sudo apt-get install python3-venv -y
-sudo apt-get install build-essential libreadline-gplv2-dev libncursesw5-dev -y
-sudo apt-get install cmake -y
-sudo apt-get install libvirt-clients libvirt-daemon-system gdebi-core apt-transport-https -y 
-sudo apt-get install flatpak -y
-sudo apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev -y
-sudo apt-get install procps file -y 
-sudo apt-get install python3-toml -y
-sudo apt-get install nala -y 
-sudo apt-get install  zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev libbz2-dev -y
-sudo bash -c "$(curl -fsSL https://git.io/JsADh || wget -q https://git.io/JsADh -O -)"
-
-
-# Repo for Brave Browser
+# 🦁 Adding Repo for Brave Browser
+echo "🦁 Adding Repo for Brave Browser..."
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 
-# Repo for Visual Studio code
+# ⚙️ Adding Repo for Visual Studio Code
+echo "⚙️ Adding Repo for Visual Studio Code..."
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
 rm -f packages.microsoft.gpg
 
+# 🔄 Updating repositories
+echo "🔁 Updating repositories..."
+sudo apt-get update -y 
+
+# 🛠️ Installing applications
+echo "🛠️ Installing applications..."
+sudo apt-get install code brave-browser -y 
+
+# 📋 List of Dependencies
+dependencies=("git" "curl" "wget" "vim" "nano" "neovim" "python3" "python3-pip" "python3-venv"
+              "build-essential" "libreadline-gplv2-dev" "libncursesw5-dev" "cmake"
+              "libvirt-clients" "libvirt-daemon-system" "gdebi-core" "apt-transport-https"
+              "flatpak" "pkg-config" "libfreetype6-dev" "libfontconfig1-dev"
+              "libxcb-xfixes0-dev" "libxkbcommon-dev" "procps" "file" "python3-toml"
+              "nala" "inkscape" "x11-apps" "zlib1g-dev" "libncurses5-dev" "libgdbm-dev"
+              "libnss3-dev" "libssl-dev" "libreadline-dev" "libffi-dev" "libsqlite3-dev" "libbz2-dev")
+
+# 🔧 Installing Dependencies
+echo -e "-------------------------------------------------------------------------\n--- 📦 Installing Dependencies ---\n"
+for dependency in "${dependencies[@]}"; do
+    echo "Installing $dependency..."
+    sudo apt-get install "$dependency" -y
+done
+
+# 💻 Installing additional software using Nala
+echo "💻 Installing additional software using Nala..."
+sudo bash -c "$(curl -fsSL https://git.io/JsADh || wget -q https://git.io/JsADh -O -)"
+
+# 🔄 Updating and installing VS Code using Nala
+echo "🔄 Updating and installing VS Code using Nala..."
+sudo nala update 
+sudo nala install code 
+
+echo -e "🚀 Installation and setup completed successfully!\n"
+
+echo "🔄 Install Flatpak:"
 # Flatpak Repot
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-
-# Installing Applictions
+# List of packages to install
 PKGS=(
-        'htop'
-        'neofetch'
-        'brave-browser'
-        'fonts-mononoki'
-        'fonts-powerline'
-        'fonts-font-awesome'
-        'openjdk-11-jdk'
-        'qemu-kvm'
-        'zsh'
-        'libvirt-clients'
-        'libvirt-daemon-system'
-        'bridge-utils'
-        'virtinst'
-        'libvirt-daemon'
-        'virt-manager'
-        'code'
-        'npm'
-        'nodejs'
-        'hugo'
-        'obs-studio'
-        'vim' 
-        'bat'
-        'lxappearance'
-        'neovim'        
-        )
-        for PKG in "${PKGS[@]}"; do
-            echo "
--------------------------------------------------------------------------
-          INSTALLING: "${PKG}"
--------------------------------------------------------------------------
-            "  
-            sudo nala install "$PKG" -y
-            
-        done
+    # General Utilities
+    'htop'
+    'neofetch'
+    'brave-browser'
+    'fonts-mononoki'
+    'fonts-powerline'
+    'fonts-font-awesome'
+    'openjdk-11-jdk'
+    'qemu-kvm'
+    'zsh'
+    'libvirt-clients'
+    'libvirt-daemon-system'
+    'bridge-utils'
+    'virtinst'
+    'libvirt-daemon'
+    'virt-manager'
+    'npm'
+    'nodejs'
+    'hugo'
+    'obs-studio'
+    'vim'
+    'bat'
+    'lxappearance'
+    'neovim'
+    'fakeroot'
+    'devscripts'
+    'fdupes'
+    
+    # Xorg and Window Manager
+    'xorg'
+    'xinit'
+    'xserver-xorg-core'
+    'awesome'
+    
+    # Network Manager and Tools
+    'network-manager-applet'
+    'rofi'
+    'dmenu'
+    
+    # Terminals and Utilities
+    'kitty'
+    'fish'
+    'zsh'
+    'i3lock'
+    'i3lock-fancy'
+    'thunar'
+    'lxappearance'
+    'bat'
+    'xbacklight'
+    'make'
+    'cmake'
+    'gcc'
+    'g++'
+    'meson'
+    'arandr'
+    'xrandr'
+    'blueman'
+    
+    # Dependencies for Picom
+    'libxext-dev'
+    'libxcb1-dev'
+    'libxcb-damage0-dev'
+    'libxcb-xfixes0-dev'
+    'libxcb-shape0-dev'
+    'libxcb-render-util0-dev'
+    'libxcb-render0-dev'
+    'libxcb-randr0-dev'
+    'libxcb-composite0-dev'
+    'libxcb-image0-dev'
+    'libxcb-present-dev'
+    'libxcb-xinerama0-dev'
+    'libxcb-glx0-dev'
+    'libpixman-1-dev'
+    'libdbus-1-dev'
+    'libconfig-dev'
+    'libgl1-mesa-dev'
+    'libpcre2-dev'
+    'libevdev-dev'
+    'uthash-dev'
+    'libev-dev'
+    'libx11-xcb-dev'
+    'meson'
+    'ninja-build'
+    'libpcre3'
+    'libpcre3-dev'
+    
+    # Network Manager and Tools
+    'network-manager-gnome'
+    'suckless-tools'
+    
+    # Miscellaneous Tools
+    'flameshot'
+    'volumeicon-alsa'
+    'pulseaudio'
+    'pulseaudio-utils'
+    'pavucontrol'
+    'pasystray'
+    'alsa-tools'
+    'variety'
+    'nitrogen'
+    'wmctrl'
+    'xdotool'
+    'libinput-tools'
+)
 
-echo -ne "
--------------------------------------------------------------------------
-           --- Installing Fm6000 Program   ---
--------------------------------------------------------------------------
-"
-sh -c "$(curl https://raw.githubusercontent.com/anhsirk0/fetch-master-6000/master/install.sh)" 
+# Install packages with emojis
+for PKG in "${PKGS[@]}"; do
+    echo "
+🚀 Installing: ${PKG} 🚀"
+    sudo nala install "$PKG" -y
+done
+
+
+
+# Picom animation
+echo "=== ${motion} Section: Animation ==="
+cd parts
+chmod +x picom-animation.sh
+./picom-animation.sh
+cd ..
+
+# Icons
+echo "=== ${icons} Section: Icons ==="
+cd parts
+chmod +x icons.sh
+./icons.sh
+cd ..
+
+# Promote
+echo "=== ${rocket} Section: Promote ==="
+cd parts
+chmod +x promote.sh
+./promote.sh
+cd ..
+
+
+# Copy files to $HOME
+echo "=== ${files_and_folders} Section: Copying files to $HOME ==="
+cd parts
+chmod +x move-file.sh
+./move-file.sh
+cd ..
+
+
+#Defautl Shell
+echo "=== ${rocket} Section: Default Shell ==="
+cd parts
+chmod +x default-shell.sh
+./default-shell.sh
+cd ..
+
+# Flat Pak Apps
+echo "=== ${rocket} Section: Flatpak Apps ==="
+cd parts
+chmod +x flatpak-apps.sh
+./flatpak-apps.sh
+cd ..
+
+# other apps
+echo "=== ${rocket} Section: Other Apps ==="
+cd parts
+./other-apps.sh
+cd ..
 
 
 echo "
----------------------------------------------
-    Install Starship Promote
----------------------------------------------
-"
-curl -sS https://starship.rs/install.sh | sh
+✨ All applications installed successfully! ✨"
+
+echo -e "🚀 Installation and setup completed successfully!\n"
 
 
-# Xorg Server
-sudo nala install  xorg build-dep xinit xserver-xorg-core xserver-xorg -y 
-
-# Aweosme Windwo Manager
-sudo nala install awesome -y 
-
-# Network Manager
-sudo nala install network-manager-applet -y 
-# Application finder
-sudo nala install rofi dmenu -y 
-# Terminal
-sudo nala install kitty fish zsh -y 
-# Lock Screen
-sudo nala install i3clock i3clock-fancy -y 
-# File Manager & Apperance
-sudo nala install thunar lxappearance bat -y 
-# Keyboard backlight
-sudo nala install xbacklight  -y
-# Core tools
-sudo nala install make cmake -y
-sudo nala install gcc gcc++ meson  -y 
-# Bluetooth & External Screen
-sudo nala install arandr xrandr blueman  -y
-
-# Dependiences for Picom
-sudo nala install libxext-dev libxcb1-dev libxcb-damage0-dev libxcb-xfixes0-dev libxcb-shape0-dev -y 
-sudo nala install libxcb-render-util0-dev libxcb-render0-dev libxcb-randr0-dev libxcb-composite0-dev libxcb-image0-dev -y 
-sudo nala install libxcb-present-dev libxcb-xinerama0-dev libxcb-glx0-dev libpixman-1-dev libdbus-1-dev libconfig-dev libgl1-mesa-dev  libpcre2-dev  -y
-sudo nala install libevdev-dev uthash-dev libev-dev libx11-xcb-dev -y 
-
-# Flamshort
-sudo nala install flameshot -y
-# Volum icons for awesome
-sudo nala install volumeicon-alsa -y
-# Pulse Audio & Icons
-sudo nala install pulseaudio pulseaudio-utils -y 
-sudo nala install pavucontrol -y
-sudo nala install pasystray alsa-tools -y 
-# Variety & Wallpapers
-sudo nala install variety nitrogen -y
-# Mouse Guestures
-sudo nala install wmctrl xdotool  libinput-tools -y  
-sudo libinput-gestures-setup autostart start
-
-# Install Picom Jonaburg Version
-git clone https://github.com/jonaburg/picom.git
-cd picom
-meson --buildtype=release . build
-ninja -C build
-sudo ninja -C build install
+echo "=== ${rocket} Section: Reboot System ==="
+cd parts
+chmod +x reboot.sh
+./reboot.sh
 cd ..
-rm -rf picom
-
-# Placing Files
-cd .config/
-cp -R -n awesome gtk-1.0 gtk-2.0 gtk-3.0 gtk-4.0 rofi picom "$destination" >/dev/null 2>&1
-cd ..
-# Copying  Pictures to $HOME/Pictures
-cp -R -n Toky-Wallpapers  "$pictures" >/dev/null 2>&1
-
-cp -R -n .themes  .fonts  "$HOME" >/dev/null 2>&1
-
-cp -R -n .bashrc .zshrc .scripts .screenlayout  "$HOME" >/dev/null 2>&1
-
-cd .config/
-cp -R -n alacritty fish kitty neofetch nvim bash htop ranger zsh starship.toml "$HOME"/.config/ >/dev/null 2>&1
-cd ..
-
-# Check if any files/folders were copied
-if [ $? -eq 0 ]; then
-    echo "${done} Files and folders copied to $destination successfully."
-else
-    echo "${error} Files and folders copied to $destination failed."
-fi
 
 

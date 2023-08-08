@@ -12,68 +12,34 @@ echo "
         ██║ ╚═╝ ██║██║██████╔╝██║ ╚████║██║╚██████╔╝██║  ██║   ██║        ██║   ╚██████╔╝██║  ██╗   ██║   ╚██████╔╝
         ╚═╝     ╚═╝╚═╝╚═════╝ ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝                
                                             
-                                            Author Setup Script
+                                            Other Applications Setup Script
 "
 # Emojis
 rocket="🚀"
+motion="🏃"
 done="✅"
 warning="⚠️"
 error="❌"
-browser="🌐"
+icons="🎆"
 files_and_folders="📁"
-prompte="🔥"
+reboot="🔁"
+ok="👌"
+
+echo "=== ${rocket} Section: Install Android Studio ==="
+wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2022.3.1.18/android-studio-2022.3.1.18-linux.tar.gz
+tar xvf android-studio-2022.3.1.18-linux.tar.gz
+cd android-studio/bin
+./studio.sh
+cd ..
+cd ..
+rm -rf android-studio-2022.3.1.18-linux.tar.gz
+rm -rf android-studio
 
 
-# Script should be run as a user not as root
-echo "=== ${rocket} Section: Running as a user ==="
-if [ "$(id -u)" -eq 0 ]; then
-    echo "${warning} Don't use sudo to run this script. Exiting.."
-    exit 1
-else
-    echo "${done} Script is being run as a user."
-fi
+echo "=== ${rocket} Section: Anaconda Install ==="
+wget  https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh
+chmod +x Anaconda3-2023.03-1-Linux-x86_64.sh
+./Anaconda3-2023.03-1-Linux-x86_64.sh
 
-
-echo "=== ${rocket} Section: Fedora System Check ==="
-# Check if Fedora package manager is being used
-if ! command -v dnf &> /dev/null; then
-    echo "${error} This script is only for Fedora. Exiting.."
-    exit 1
-fi
-
-echo "${done} Fedora detected! Proceeding with the rest of the script."
-
-# Update your System
-echo "=== ${rocket} Section: Updating System ==="
-sudo dnf update -y
-
-
-echo "=== ${rocket} Section: Installing Applications ==="
-# Define the list of packages to install
-PACKAGES=(
-
-    'firefox'
-    'vim'
-    'bat'
-    'obs-studio'
-    'vlc'
-    'rust'
-    'discord'
-    'htop'
-    'neofetch'
-    'curl'
-    'zip'
-    'unzip'
-    'unrar'
-    'git'
-    'wget'
-    'tree'
-    'flatpak'
-    'xrandr'
-    'hugo'
-    'trash-cli'
-)
-
-# Install packages using a single dnf command
-sudo dnf install -y "${PACKAGES[@]}"
+rm -rf Anaconda3-2023.03-1-Linux-x86_64.sh
 
