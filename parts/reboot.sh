@@ -2,7 +2,6 @@
 
 clear
 
-# Banner
 echo "
 
         ███╗   ███╗██╗██████╗ ███╗   ██╗██╗ ██████╗ ██╗  ██╗████████╗  ████████╗ ██████╗ ██╗  ██╗██╗   ██╗ ██████╗ 
@@ -12,68 +11,32 @@ echo "
         ██║ ╚═╝ ██║██║██████╔╝██║ ╚████║██║╚██████╔╝██║  ██║   ██║        ██║   ╚██████╔╝██║  ██╗   ██║   ╚██████╔╝
         ╚═╝     ╚═╝╚═╝╚═════╝ ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝                
                                             
-                                            Author Setup Script
+                                            Reboot Setup Script
 "
-# Emojis
+
+
 rocket="🚀"
+motion="🏃"
 done="✅"
 warning="⚠️"
 error="❌"
-browser="🌐"
+icons="🎆"
 files_and_folders="📁"
-prompte="🔥"
+reboot="🔁"
+ok="👌"
 
+echo "=== ${reboot} Section: Reboot System ==="
+echo "${reboot} Do you want to reboot your system? (Enter 'yes' or 'no')"
+read -r choice
 
-# Script should be run as a user not as root
-echo "=== ${rocket} Section: Running as a user ==="
-if [ "$(id -u)" -eq 0 ]; then
-    echo "${warning} Don't use sudo to run this script. Exiting.."
-    exit 1
+choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]' | xargs) # Convert to lowercase and remove leading/trailing whitespace
+
+if [[ "$choice" == "yes" || "$choice" == "y" ]]; then
+    echo -e "\n${reboot} Rebooting the system..."
+    sleep 3
+    reboot
+elif [[ "$choice" == "no" || "$choice" == "n" ]]; then
+    echo -e "\n${ok} No reboot requested. Exiting..."
 else
-    echo "${done} Script is being run as a user."
+    echo -e "\n${error} Invalid choice. No reboot requested. Exiting..."
 fi
-
-
-echo "=== ${rocket} Section: Fedora System Check ==="
-# Check if Fedora package manager is being used
-if ! command -v dnf &> /dev/null; then
-    echo "${error} This script is only for Fedora. Exiting.."
-    exit 1
-fi
-
-echo "${done} Fedora detected! Proceeding with the rest of the script."
-
-# Update your System
-echo "=== ${rocket} Section: Updating System ==="
-sudo dnf update -y
-
-
-echo "=== ${rocket} Section: Installing Applications ==="
-# Define the list of packages to install
-PACKAGES=(
-
-    'firefox'
-    'vim'
-    'bat'
-    'obs-studio'
-    'vlc'
-    'rust'
-    'discord'
-    'htop'
-    'neofetch'
-    'curl'
-    'zip'
-    'unzip'
-    'unrar'
-    'git'
-    'wget'
-    'tree'
-    'flatpak'
-    'xrandr'
-    'hugo'
-    'trash-cli'
-)
-
-# Install packages using a single dnf command
-sudo dnf install -y "${PACKAGES[@]}"
-

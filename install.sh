@@ -2,7 +2,6 @@
 
 clear
 
-# Banner
 echo "
 
         ███╗   ███╗██╗██████╗ ███╗   ██╗██╗ ██████╗ ██╗  ██╗████████╗  ████████╗ ██████╗ ██╗  ██╗██╗   ██╗ ██████╗ 
@@ -11,69 +10,48 @@ echo "
         ██║╚██╔╝██║██║██║  ██║██║╚██╗██║██║██║   ██║██╔══██║   ██║        ██║   ██║   ██║██╔═██╗   ╚██╔╝  ██║   ██║
         ██║ ╚═╝ ██║██║██████╔╝██║ ╚████║██║╚██████╔╝██║  ██║   ██║        ██║   ╚██████╔╝██║  ██╗   ██║   ╚██████╔╝
         ╚═╝     ╚═╝╚═╝╚═════╝ ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝                
-                                            
-                                            Author Setup Script
+
+                                            Install script for MidNight Tokyo
 "
-# Emojis
-rocket="🚀"
-done="✅"
-warning="⚠️"
-error="❌"
-browser="🌐"
-files_and_folders="📁"
-prompte="🔥"
 
-
-# Script should be run as a user not as root
-echo "=== ${rocket} Section: Running as a user ==="
-if [ "$(id -u)" -eq 0 ]; then
-    echo "${warning} Don't use sudo to run this script. Exiting.."
+# Function to display an error message and exit
+show_error() {
+    echo "❌ Error: $1"
     exit 1
-else
-    echo "${done} Script is being run as a user."
+}
+
+# Check if script is run with sudo
+if [ "$EUID" -eq 0 ]; then
+    show_error "Please do not run this script with sudo."
 fi
 
+# Check for application
+cd parts
+chmod +x check-xorg.sh
+./check-xorg.sh
+cd ..
 
-echo "=== ${rocket} Section: Fedora System Check ==="
-# Check if Fedora package manager is being used
-if ! command -v dnf &> /dev/null; then
-    echo "${error} This script is only for Fedora. Exiting.."
-    exit 1
+# Check if Debian package manager is installed
+if command -v apt-get &> /dev/null; then
+    echo "✅ Debian package manager (apt-get) is installed."
+    clear
+    ./debian.sh
 fi
 
-echo "${done} Fedora detected! Proceeding with the rest of the script."
+# Check if Fedora package manager is installed
+if command -v dnf &> /dev/null; then
+    echo "✅ Fedora package manager (dnf) is installed."
+    clear
+    ./fedora.sh
+fi
 
-# Update your System
-echo "=== ${rocket} Section: Updating System ==="
-sudo dnf update -y
+# Check if Arch package manager is installed
+if command -v pacman &> /dev/null; then
+    echo "✅ Arch package manager (pacman) is installed."
+    show_error "Arch is not supported yet. Sorry :("
+fi
 
-
-echo "=== ${rocket} Section: Installing Applications ==="
-# Define the list of packages to install
-PACKAGES=(
-
-    'firefox'
-    'vim'
-    'bat'
-    'obs-studio'
-    'vlc'
-    'rust'
-    'discord'
-    'htop'
-    'neofetch'
-    'curl'
-    'zip'
-    'unzip'
-    'unrar'
-    'git'
-    'wget'
-    'tree'
-    'flatpak'
-    'xrandr'
-    'hugo'
-    'trash-cli'
-)
-
-# Install packages using a single dnf command
-sudo dnf install -y "${PACKAGES[@]}"
-
+# If no package manager is detected
+if ! command -v apt-get &> /dev/null && ! command -v dnf &> /dev/null && ! command -v pacman &> /dev/null; then
+    show_error "No supported package manager detected."
+fi

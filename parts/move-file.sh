@@ -1,8 +1,6 @@
 #!/bin/bash
 
 clear
-
-# Banner
 echo "
 
         ███╗   ███╗██╗██████╗ ███╗   ██╗██╗ ██████╗ ██╗  ██╗████████╗  ████████╗ ██████╗ ██╗  ██╗██╗   ██╗ ██████╗ 
@@ -12,68 +10,40 @@ echo "
         ██║ ╚═╝ ██║██║██████╔╝██║ ╚████║██║╚██████╔╝██║  ██║   ██║        ██║   ╚██████╔╝██║  ██╗   ██║   ╚██████╔╝
         ╚═╝     ╚═╝╚═╝╚═════╝ ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝                
                                             
-                                            Author Setup Script
+                                            Move File Setup Script
 "
-# Emojis
-rocket="🚀"
-done="✅"
-warning="⚠️"
-error="❌"
-browser="🌐"
-files_and_folders="📁"
-prompte="🔥"
+#  Rename & Detecting Existing Folders
+config_dir="$HOME/.config"
+folders=("alacrity" "kitty" "fish" "picom" "ranger" "awesome" "htop" "lsd" "rofi" "bash" "gtk-2.0" "gtk-3.0" "gtk-4.0" "nvim" "picom" "zsh" "starship.toml")
+
+for folder in "${folders[@]}"; do
+    folder_path="$config_dir/$folder"
+    if [ -d "$folder_path" ]; then
+        mv "$folder_path" "$folder_path.old"
+        echo "Renamed $folder to $folder.old"
+    else
+        echo "$folder not found"
+    fi
+done
 
 
-# Script should be run as a user not as root
-echo "=== ${rocket} Section: Running as a user ==="
-if [ "$(id -u)" -eq 0 ]; then
-    echo "${warning} Don't use sudo to run this script. Exiting.."
-    exit 1
-else
-    echo "${done} Script is being run as a user."
-fi
+# Moving Folders
+config_dir="$HOME/.config"
+source_dirs=("alacrity" "kitty" "fish" "picom" "ranger" "awesome" "htop" "lsd" "rofi" "bash" "gtk-2.0" "gtk-3.0" "gtk-4.0" "nvim" "picom" "zsh" "starship.toml")
 
+for source_dir in "${source_dirs[@]}"; do
+    source_path="$config_dir/$source_dir"
+    
+    if [ -d "$source_path" ]; then
+        for file in "$source_path"/*; do
+            if [ -f "$file" ]; then
+                cp -r  "$file" "$config_dir/"
+                echo "Moved $file to $config_dir"
+            fi
+        done
+    else
+        echo "$source_dir not found"
+    fi
+done
 
-echo "=== ${rocket} Section: Fedora System Check ==="
-# Check if Fedora package manager is being used
-if ! command -v dnf &> /dev/null; then
-    echo "${error} This script is only for Fedora. Exiting.."
-    exit 1
-fi
-
-echo "${done} Fedora detected! Proceeding with the rest of the script."
-
-# Update your System
-echo "=== ${rocket} Section: Updating System ==="
-sudo dnf update -y
-
-
-echo "=== ${rocket} Section: Installing Applications ==="
-# Define the list of packages to install
-PACKAGES=(
-
-    'firefox'
-    'vim'
-    'bat'
-    'obs-studio'
-    'vlc'
-    'rust'
-    'discord'
-    'htop'
-    'neofetch'
-    'curl'
-    'zip'
-    'unzip'
-    'unrar'
-    'git'
-    'wget'
-    'tree'
-    'flatpak'
-    'xrandr'
-    'hugo'
-    'trash-cli'
-)
-
-# Install packages using a single dnf command
-sudo dnf install -y "${PACKAGES[@]}"
-
+echo "Files are moved! 🚀"

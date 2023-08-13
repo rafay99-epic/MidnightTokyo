@@ -1,4 +1,7 @@
 #!/bin/bash
+
+clear
+
 # Banner
 echo "
 
@@ -51,6 +54,18 @@ sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfre
 # Enabling AppStream
 sudo dnf group update core -y
 
+# Microsoft Visual Studio Code
+echo "=== ${rocket} Section: Microsoft Visual Studio Code ==="
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+sudo dnf check-update
+
+# Brave Browser
+echo "=== ${browser} Section: Brave Browser ==="
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://brave-browser-rpm-beta.s3.brave.com/brave-browser-beta.repo
+sudo rpm --import https://brave-browser-rpm-beta.s3.brave.com/brave-core-nightly.asc
+
 # Update your System
 echo "=== ${rocket} Section: Updating System ==="
 sudo dnf update -y
@@ -74,7 +89,6 @@ PACKAGES=(
     'variety'
     'vim'
     'bat'
-    'lxappearance'
     'make'
     'cmake'
     'rust'
@@ -106,8 +120,22 @@ PACKAGES=(
     'xss-lock'
     'blueman'
     'alsa-tools'
+    'inkscape'
+    'xorg-x11-apps'
+    'i3lock-fancy'
+    'gnome-characters'
+    'fish'
+    'kitty'
+    'alacritty'
+    'lsd'
+    'neovim'
+    'arandr'
+    'trash-cli'
+    'tldr'
+    'zsh'
+    'brave-browser'
+    'code'
 )
-
 # Install packages using a single dnf command
 sudo dnf install -y "${PACKAGES[@]}"
 
@@ -118,98 +146,85 @@ sudo fc-cache -v
 
 # Picom animation
 echo "=== ${motion} Section: Animation ==="
-git clone https://github.com/jonaburg/picom.git
-cd picom
-meson --buildtype=release . build
-ninja -C build
-sudo ninja -C build install
+cd parts
+chmod +x picom-animation.sh
+./picom-animation.sh
 cd ..
-rm -rf picom
 
-echo "=== ${rocket} Section: Installing i3lock-color ==="
-sudo dnf install -y autoconf automake cairo-devel fontconfig gcc libev-devel libjpeg-turbo-devel libXinerama libxkbcommon-devel libxkbcommon-x11-devel libXrandr pam-devel pkgconf xcb-util-image-devel xcb-util-xrm-devel
-git clone https://github.com/Raymo111/i3lock-color.git
-cd i3lock-color
-./build.sh
-./install-i3lock-color.sh
+# Icons
+echo "=== ${icons} Section: Icons ==="
+cd parts
+chmod +x icons.sh
+./icons.sh
 cd ..
-rm -rf i3lock-color
 
-# Icons Pack
-echo "=== ${icons} Section: Icon Pack ==="
-git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git
-cd Tela-circle-icon-theme
-chmod +x install.sh
-sudo ./install.sh
+# Promote
+echo "=== ${rocket} Section: Promote ==="
+cd parts
+chmod +x promote.sh
+./promote.sh
 cd ..
-rm -rf Tela-circle-icon-theme
+
 
 # Copy files to $HOME
 echo "=== ${files_and_folders} Section: Copying files to $HOME ==="
-# Destination directory
-destination="$HOME/.config"
-pictures="$HOME/Pictures"
-
-# Check if the destination directory exists, create it if not
-if [ ! -d "$destination" ]; then
-    mkdir -p "$destination"
-fi
-
-# Copy all folders and files from .config to $HOME/.config
-cd .config/
-cp -R -n awesome goa-1.0 gtk-2.0 gtk-3.0 gtk-4.0 rofi picom "$destination" >/dev/null 2>&1
+cd parts
+chmod +x move-file.sh
+./move-file.sh
 cd ..
-# Copying  Pictures to $HOME/Pictures
-cp -R -n Toky-Wallpapers  "$pictures" >/dev/null 2>&1
 
-cp -R -n .themes  .fonts  "$HOME" >/dev/null 2>&1
 
-# Check if any files/folders were copied
-if [ $? -eq 0 ]; then
-    echo "${done} Files and folders copied to $destination successfully."
-else
-    echo "${error} Files and folders copied to $destination failed."
-fi
+#Defautl Shell
+echo "=== ${rocket} Section: Default Shell ==="
+cd parts
+chmod +x default-shell.sh
+./default-shell.sh
+cd ..
 
-# Function to display a success message with emoji
-print_success() {
-    echo "✅ $1"
-}
+# Flat Pak Apps
+echo "=== ${rocket} Section: Flatpak Apps ==="
+cd parts
+chmod +x flatpak-apps.sh
+./flatpak-apps.sh
+cd ..
 
-# Function to display a warning message with emoji
-print_warning() {
-    echo "⚠️ $1"
-}
+# other apps
+echo "=== ${rocket} Section: Other Apps ==="
+cd parts
+./other-apps.sh
+cd ..
 
-# Function to display an error message with emoji
-print_error() {
-    echo "❌ $1"
-    exit 1
-}
+# Author Applications
+echo "Welcome to the Author's Setup Script! 🎉"
 
-# Prompt user for installation
 read -rp "Do you want to install and configure the author's files? (y/n): " choice
-if [[ $choice =~ ^[Yy]$ ]]; then
-    # Installation steps go here
-    print_success "Starting installation..."
+
+if [[ "$choice" =~ ^[Yy]$ ]]; then
+    echo "✅ Starting installation..."
+    
+    # Run the author-setup script and capture the exit code
     ./author-setup.sh
-    print_success "Installation and configuration complete!"
+    exit_code=$?
+    
+    if [[ $exit_code -eq 0 ]]; then
+        echo "✅ Installation and configuration complete!"
+    else
+        echo "❌ Installation failed."
+        exit $exit_code
+    fi
 else
-    print_warning "Installation cancelled by user."
+    echo "⚠️ Installation cancelled by user."
 fi
 
-echo "=== ${reboot} Section: Reboot System ==="
-echo "${reboot} Do you want to reboot your system? (Enter 'yes' or 'no')"
-read -r choice
+echo "=== ${rocket} Section: Installing Display Manager ==="
+cd parts
+chmod +x fedora-display-manager.sh
+./fedora-display-manager.sh
+cd ..
 
-choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]' | xargs) # Convert to lowercase and remove leading/trailing whitespace
 
-if [[ "$choice" == "yes" || "$choice" == "y" ]]; then
-    echo -e "\n${reboot} Rebooting the system..."
-    sleep 3
-    reboot
-elif [[ "$choice" == "no" || "$choice" == "n" ]]; then
-    echo -e "\n${ok} No reboot requested. Exiting..."
-else
-    echo -e "\n${error} Invalid choice. No reboot requested. Exiting..."
-fi
+echo "=== ${rocket} Section: Reboot System ==="
+cd parts
+chmod +x reboot.sh
+./reboot.sh
+cd ..
