@@ -4,15 +4,31 @@ clear
 
 echo "
 
-        ███╗   ███╗██╗██████╗ ███╗   ██╗██╗ ██████╗ ██╗  ██╗████████╗  ████████╗ ██████╗ ██╗  ██╗██╗   ██╗ ██████╗ 
-        ████╗ ████║██║██╔══██╗████╗  ██║██║██╔════╝ ██║  ██║╚══██╔══╝  ╚══██╔══╝██╔═══██╗██║ ██╔╝╚██╗ ██╔╝██╔═══██╗
-        ██╔████╔██║██║██║  ██║██╔██╗ ██║██║██║  ███╗███████║   ██║        ██║   ██║   ██║█████╔╝  ╚████╔╝ ██║   ██║
-        ██║╚██╔╝██║██║██║  ██║██║╚██╗██║██║██║   ██║██╔══██║   ██║        ██║   ██║   ██║██╔═██╗   ╚██╔╝  ██║   ██║
-        ██║ ╚═╝ ██║██║██████╔╝██║ ╚████║██║╚██████╔╝██║  ██║   ██║        ██║   ╚██████╔╝██║  ██╗   ██║   ╚██████╔╝
-        ╚═╝     ╚═╝╚═╝╚═════╝ ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝                
-                                            
-                                            Debain Setup Script
+                    ███╗   ███╗██╗██████╗ ███╗   ██╗██╗ ██████╗ ██╗  ██╗████████╗  ████████╗ ██████╗ ██╗  ██╗██╗   ██╗ ██████╗ 
+                    ████╗ ████║██║██╔══██╗████╗  ██║██║██╔════╝ ██║  ██║╚══██╔══╝  ╚══██╔══╝██╔═══██╗██║ ██╔╝╚██╗ ██╔╝██╔═══██╗
+                    ██╔████╔██║██║██║  ██║██╔██╗ ██║██║██║  ███╗███████║   ██║        ██║   ██║   ██║█████╔╝  ╚████╔╝ ██║   ██║
+                    ██║╚██╔╝██║██║██║  ██║██║╚██╗██║██║██║   ██║██╔══██║   ██║        ██║   ██║   ██║██╔═██╗   ╚██╔╝  ██║   ██║
+                    ██║ ╚═╝ ██║██║██████╔╝██║ ╚████║██║╚██████╔╝██║  ██║   ██║        ██║   ╚██████╔╝██║  ██╗   ██║   ╚██████╔╝
+                    ╚═╝     ╚═╝╚═╝╚═════╝ ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝                
+                                                        
+                                                        Debain Setup Script
 "
+
+# Emojis
+rocket="🚀"
+motion="🏃"
+done="✅"
+warning="⚠️"
+error="❌"
+icons="🎆"
+files_and_folders="📁"
+reboot="🔁"
+ok="👌"
+cross_mark="❌"
+check_mark="✅"
+gear="⚙️"
+
+
 
 # 🔄 Updating system
 echo "🔁 Updating system..."
@@ -34,156 +50,85 @@ rm -f packages.microsoft.gpg
 echo "🔁 Updating repositories..."
 sudo apt-get update -y 
 
-# 🛠️ Installing applications
-echo "🛠️ Installing applications..."
-sudo apt-get install code brave-browser -y 
+# Checking Nala in the Repository
+echo "=== ${rocket} Section: Checking Nala in the Repository ==="
 
 # 📋 List of Dependencies
-dependencies=("git" "curl" "wget" "vim" "nano" "neovim" "python3" "python3-pip" "python3-venv"
-              "build-essential" "libreadline-gplv2-dev" "libncursesw5-dev" "cmake"
+dependencies=(
+            # Ssytem Dependencies
+              "build-essential" "libncursesw5-dev" "cmake" "libbz2-dev"
               "libvirt-clients" "libvirt-daemon-system" "gdebi-core" "apt-transport-https"
-              "flatpak" "pkg-config" "libfreetype6-dev" "libfontconfig1-dev"
+              "flatpak" "pkg-config" "libfreetype6-dev" "libfontconfig1-dev" 'fakeroot'
               "libxcb-xfixes0-dev" "libxkbcommon-dev" "procps" "file" "python3-toml"
-              "nala" "inkscape" "x11-apps" "zlib1g-dev" "libncurses5-dev" "libgdbm-dev"
-              "libnss3-dev" "libssl-dev" "libreadline-dev" "libffi-dev" "libsqlite3-dev" "libbz2-dev")
+              "inkscape"  "zlib1g-dev" "libncurses5-dev" "libgdbm-dev"
+              "libnss3-dev" "libssl-dev" "libreadline-dev" "libffi-dev" "libsqlite3-dev" "flatpak"
+              "devscripts" "fdupes" "make" "cmake" "gcc" "g++" "meson" "ninja-build" "wmctrl" "xdotool" "libinput-tools"
+            # File Manager
+               "thunar" "ranger"
+            #  Terminal & Utilities
+              "htop"  'zsh' 'bat' 'lxappearance' 'neofetch' 'fish' 'obs-studio' "git" "curl" "wget" "kitty" "fish" "lxappearance" "bat" "trash-cli" "lsd" "tree" 
+              "unzip" "unrar"
+            #  Font Manager 
+              'fonts-mononoki' 'fonts-powerline' 'fonts-font-awesome'
+            #   Coding & Programming Language
+              'npm' 'nodejs' 'hugo'  'openjdk-11-jdk' "python3" "python3-pip" "python3-venv"
+            # Editiors
+               'code' 'neovim' "vim" "nano"
+            #   Virtual Machine
+              'qemu-kvm'  'libvirt-clients' 'libvirt-daemon-system' 'bridge-utils' 'virtinst' 'libvirt-daemon' 'virt-manager' 
+            #   browsers
+               "brave-browser" "firefox"
+            # Xorg 
+                "xorg" "xinit" "xserver-xorg-core" "x11-apps" "x11-xserver-utils"
+            # Awesome WM
+                "awesome"
+                # Lock Screen
+                "i3lock" "i3lock-fancy"
+                # back Screen Light & Screen Setup
+                "xbacklight"  "arandr"
+                # Bluetooth
+                "blueman"
+                # Network Manager & Searching Applications
+                "network-manager-gnome" "suckless-tools" "rofi"
+                # Picom
+                "libxext-dev" "libxcb1-dev" "libxcb-damage0-dev" "libxcb-xfixes0-dev" 
+                "libxcb-shape0-dev" "libxcb-render-util0-dev" "libxcb-render0-dev" "libxcb-randr0-dev" 
+                "libxcb-composite0-dev" "libxcb-image0-dev" "libxcb-present-dev" "libxcb-xinerama0-dev" 
+                "libxcb-glx0-dev" "libpixman-1-dev" "libdbus-1-dev" "libconfig-dev" "libgl1-mesa-dev" 
+                "libpcre2-dev" "libevdev-dev" "uthash-dev" "libev-dev" "libx11-xcb-dev"  "libpcre3" "libpcre3-dev"
+                # Waalpaper
+                "variety" "nitrogen" "flameshot"
+                # Audio
+                "volumeicon-alsa" "pulseaudio" "pulseaudio-utils" "pavucontrol"
+                "alsa-tools" "alsa-utils" "alsa-oss" "alsa-base" "alsa-ucm-conf" "alsa-topology-conf" "alsa-ucm-conf" "pasystray" 
+            )
 
-# 🔧 Installing Dependencies
-echo -e "-------------------------------------------------------------------------\n--- 📦 Installing Dependencies ---\n"
-for dependency in "${dependencies[@]}"; do
-    echo "Installing $dependency..."
-    sudo apt-get install "$dependency" -y
-done
-
-# 💻 Installing additional software using Nala
-echo "💻 Installing additional software using Nala..."
-sudo bash -c "$(curl -fsSL https://git.io/JsADh || wget -q https://git.io/JsADh -O -)"
-
-# 🔄 Updating and installing VS Code using Nala
-echo "🔄 Updating and installing VS Code using Nala..."
-sudo nala update 
-sudo nala install code 
-
-echo -e "🚀 Installation and setup completed successfully!\n"
-
-echo "🔄 Install Flatpak:"
-# Flatpak Repot
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-# List of packages to install
-PKGS=(
-    # General Utilities
-    'htop'
-    'neofetch'
-    'brave-browser'
-    'fonts-mononoki'
-    'fonts-powerline'
-    'fonts-font-awesome'
-    'openjdk-11-jdk'
-    'qemu-kvm'
-    'zsh'
-    'libvirt-clients'
-    'libvirt-daemon-system'
-    'bridge-utils'
-    'virtinst'
-    'libvirt-daemon'
-    'virt-manager'
-    'npm'
-    'nodejs'
-    'hugo'
-    'obs-studio'
-    'vim'
-    'bat'
-    'lxappearance'
-    'neovim'
-    'fakeroot'
-    'devscripts'
-    'fdupes'
+# Check if nala is available in the repository
+if apt-cache policy nala | grep -q "Installed: (none)"; then
+    echo "$cross_mark Nala is not available in the repository."
     
-    # Xorg and Window Manager
-    'xorg'
-    'xinit'
-    'xserver-xorg-core'
-    'awesome'
-    
-    # Network Manager and Tools
-    'network-manager-applet'
-    'rofi'
-    'dmenu'
-    
-    # Terminals and Utilities
-    'kitty'
-    'fish'
-    'zsh'
-    'i3lock'
-    'i3lock-fancy'
-    'thunar'
-    'lxappearance'
-    'bat'
-    'xbacklight'
-    'make'
-    'cmake'
-    'gcc'
-    'g++'
-    'meson'
-    'arandr'
-    'xrandr'
-    'blueman'
-    
-    # Dependencies for Picom
-    'libxext-dev'
-    'libxcb1-dev'
-    'libxcb-damage0-dev'
-    'libxcb-xfixes0-dev'
-    'libxcb-shape0-dev'
-    'libxcb-render-util0-dev'
-    'libxcb-render0-dev'
-    'libxcb-randr0-dev'
-    'libxcb-composite0-dev'
-    'libxcb-image0-dev'
-    'libxcb-present-dev'
-    'libxcb-xinerama0-dev'
-    'libxcb-glx0-dev'
-    'libpixman-1-dev'
-    'libdbus-1-dev'
-    'libconfig-dev'
-    'libgl1-mesa-dev'
-    'libpcre2-dev'
-    'libevdev-dev'
-    'uthash-dev'
-    'libev-dev'
-    'libx11-xcb-dev'
-    'meson'
-    'ninja-build'
-    'libpcre3'
-    'libpcre3-dev'
-    
-    # Network Manager and Tools
-    'network-manager-gnome'
-    'suckless-tools'
-    
-    # Miscellaneous Tools
-    'flameshot'
-    'volumeicon-alsa'
-    'pulseaudio'
-    'pulseaudio-utils'
-    'pavucontrol'
-    'pasystray'
-    'alsa-tools'
-    'variety'
-    'nitrogen'
-    'wmctrl'
-    'xdotool'
-    'libinput-tools'
-)
-
-# Install packages with emojis
-for PKG in "${PKGS[@]}"; do
-    echo "
-🚀 Installing: ${PKG} 🚀"
-    sudo nala install "$PKG" -y
-done
+    # Install applications using nala
+    echo "$rocket Installing applications using nala..."
+    for app in "${dependencies[@]}"; do
+        echo "$gear Installing $app using nala..."
+        sudo apt-get install "$app" -y
+    done
+else
+    echo "$check_mark Nala is available in the repository. Installing nala..."
+    sudo apt-get update
+    sudo apt-get install nala -y 
+    echo "$rocket Installing other applications using nala..."
+    sudo nala install "${dependencies[@]}" -y
+fi
 
 echo "✨ All applications installed successfully! ✨"
+
+# Installing Pacstall
+echo "💻 Installing Pacstall: AUR for Debian"
+cd parts
+chmod +x pacstall-install.sh
+./pacstall-install.sh
+cd ..
 
 # Picom animation
 echo "=== ${motion} Section: Animation ==="
@@ -205,7 +150,6 @@ cd parts
 chmod +x promote.sh
 ./promote.sh
 cd ..
-
 
 # Copy files to $HOME
 echo "=== ${files_and_folders} Section: Copying files to $HOME ==="
@@ -241,11 +185,8 @@ chmod +x debian-display-manager.sh
 ./debian-display-manager.sh
 cd ..
 
-
 echo "=== ${rocket} Section: Reboot System ==="
 cd parts
 chmod +x reboot.sh
 ./reboot.sh
 cd ..
-
-
