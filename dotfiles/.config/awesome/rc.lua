@@ -105,9 +105,10 @@ local filemanager       = "thunar"
 -- local mailclient        = "geary"
 local mediaplayer       = "vlc"
 -- local scrlocker         = "betterlockscreen"
-local scrlocker         = "i3lock --image /home/prometheus/Pictures/Toky-Wallpapers/tokyo-night33.png"
+local scrlocker         = "i3lock-fancy"
 -- local terminal          = "st -f consolas"
 local terminal          = "kitty"
+-- local terminal          = "alacritty"
 local virtualmachine    = "virtualbox"
 
 -- awesome variables
@@ -279,23 +280,30 @@ globalkeys = my_table.join(
 
 --    awful.key({ modkey, Shift }, "s", function () awful.util.spawn( "rofi -show" ) end,
 --    {description = "surf web browser" , group = "gui apps" }),
-        awful.key({ modkey, "Shift" }, "d",
-        function ()
-            os.execute("sh ~/.config/rofi/launchers/colorful/launcher.sh")
-            
-        end,
-        {description = "show dmenu", group = "hotkeys"}),
+        -- awful.key({ modkey, "Shift" }, "d",
+        -- function ()
+            -- os.execute("sh ~/.config/rofi/launchers/colorful/launcher.sh")
+            -- 
+        -- end,
+        -- {description = "show dmenu", group = "hotkeys"}),
 
         -- awful.key(
         --     {modkey, "Shift"},
-        --         's',
+        --         'd',
         --     function()
         --         os.execute("sh ~/.config/rofi/launchers/slate/launcher.sh")
         --     end,
         --             {description = 'Lock the screen', group = 'awesome'}
         --         ),
-    
-    
+
+        -- Running Rofi
+        awful.key(
+            {modkey, "Shift"},'d',
+                function()
+                    os.execute("sh $HOME/.config/awesome/scripts/run-rofi.sh")
+                end,
+                            {description = 'Lock the screen', group = 'awesome'}
+            ),
     
     
     -- My dmenu scripts (Alt+Ctrl+Key)
@@ -346,17 +354,13 @@ globalkeys = my_table.join(
     --   { description = "Lock Screen", group = "System"}),
     
       awful.key({modkey, "Shift"}, "l", function () 
-        os.execute("sh ~/.scripts/lock.sh")
+        os.execute("i3lock-fancy")
         end,
       { description = "Lock Screen", group = "System"}),
 
     -- Hotkeys Awesome
 
      
-    
-    
-    
-    
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
         {description = "show help", group="awesome"}),
 
@@ -533,8 +537,8 @@ globalkeys = my_table.join(
             'y',
         function()
             -- awful.spawn(scrlocker)
-            -- awful.spawn(scrlocker)
-            os.execute("sh ~/.scripts/lock.sh")
+            awful.spawn(scrlocker)
+            -- os.execute("sh ~/.scripts/lock.sh")
         end,
                 {description = 'Lock the screen', group = 'awesome'}
             ),
@@ -544,7 +548,7 @@ globalkeys = my_table.join(
         {modkey},
             'y',
         function()
-            os.execute("sh ~/.config/rofi/applets/menu/powermenu.sh")
+            os.execute("sh $HOME/.config/awesome/scripts/run-power-menu.sh")
         end,
                 {description = 'Lock the screen', group = 'awesome'}
             ),
@@ -941,7 +945,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- Autostart applications
 
 -- Exectuting The Vertical Layout Screen(External-Layout)
-os.execute("sh ~/.screenlayout/vertical-layout.sh")
+-- os.execute("sh ~/.screenlayout/vertical-layout.sh")
 -- Enable & Start Picom
 awful.spawn.with_shell("picom --experimental-backends")
 
@@ -961,4 +965,7 @@ awful.spawn.with_shell("flameshot")
 -- Enabling the track pad guestures
 awful.spawn.with_shell("libinput-gestures-setup start")
 -- Sleep Laptop after 10 sec
-awful.spawn.with_shell("sleep 10s && xss-lock  sh $HOME/.scripts/lock.sh")
+awful.spawn.with_shell("sleep 10s && xss-lock  i3lock-fancy")
+-- Rofi
+awful.spawn.with_shell("sh $HOME/.config/rofi/launchers/colorful/launcher.sh")
+
